@@ -1,0 +1,261 @@
+<template>
+	<div class="loginBox">
+		<img
+			class="user"
+			src="https://i.ibb.co/yVGxFPR/2.png"
+			height="100px"
+			width="100px"
+		/>
+		<h3>Sign up here</h3>
+		<form @submit.prevent="handleRegister">
+			<div class="inputBox">
+				<input
+					type="text"
+					name="nama"
+					placeholder="Full Name"
+					v-model="nama"
+					required
+				/>
+				<input
+					type="text"
+					name="nis"
+					placeholder="NIS"
+					v-model="nis"
+					required
+				/>
+				<input
+					type="text"
+					name="kelas"
+					placeholder="Kelas"
+					v-model="kelas"
+					required
+				/>
+				<!-- <input
+					type="file"
+					name="photo"
+					accept="image/*"
+					@change="handleFileUpload"
+					ref="fileInput"
+				/> -->
+				<input
+					type="text"
+					name="photoUrl"
+					placeholder="paste photo URL disini"
+					v-model="photoUrl"
+				/>
+			</div>
+			<input
+				type="submit"
+				name=""
+				value="Register"
+			/>
+		</form>
+
+		<div
+			v-if="errorMessage"
+			class="error-message"
+		>
+			{{ errorMessage }}
+		</div>
+
+		<div
+			v-if="successMessage"
+			class="success-message"
+		>
+			{{ successMessage }}
+		</div>
+		<div class="text-center">
+			<a
+				style="color: #59238f"
+				href="/login"
+				>Sign-in</a
+			>
+		</div>
+	</div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const nama = ref('');
+const nis = ref('');
+const kelas = ref('');
+const photoUrl = ref('');
+const errorMessage = ref('');
+const successMessage = ref('');
+// const fileInput = ref(null);
+
+// const handleFileUpload = (event) => {
+// 	const file = event.target.files[0]
+// 	if (file) {
+// 		const reader = new FileReader()
+// 		reader.onload = (e) => {
+// 			photoUrl.value = e.target.result
+// 		}
+// 		reader.readAsDataURL(file)
+// 	}
+// }
+
+const handleRegister = async () => {
+	errorMessage.value = '';
+	successMessage.value = '';
+
+	if (!nama.value || !nis.value || !kelas.value) {
+		errorMessage.value = 'Please fill all required fields';
+		return;
+	}
+
+	const finalPhotoUrl = photoUrl.value || 'https://via.placeholder.com/150';
+
+	const newStudent = {
+		nama: nama.value,
+		nis: nis.value,
+		kelas: kelas.value,
+		foto: finalPhotoUrl,
+	};
+
+	try {
+		const response = await fetch('http://localhost:3001/api/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(newStudent),
+		});
+
+		if (response.ok) {
+			successMessage.value = 'Registration successful!';
+			setTimeout(() => {
+				window.location.href = '/login';
+			}, 1500);
+		} else {
+			errorMessage.value = 'Registration failed';
+		}
+	} catch (error) {
+		errorMessage.value = 'Network error';
+	}
+};
+</script>
+
+<style scoped>
+body {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	font-family: sans-serif;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	overflow: hidden;
+}
+
+#particles-js {
+	height: 100%;
+}
+.loginBox {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 350px;
+	min-height: 200px;
+	background: #000000;
+	border-radius: 10px;
+	padding: 40px;
+	box-sizing: border-box;
+}
+.user {
+	margin: 0 auto;
+	display: block;
+	margin-bottom: 20px;
+}
+h3 {
+	margin: 0;
+	padding: 0 0 20px;
+	color: #59238f;
+	text-align: center;
+}
+.loginBox input {
+	width: 100%;
+	margin-bottom: 20px;
+}
+.loginBox input[type='text'],
+.loginBox input[type='file'] {
+	border: none;
+	border-bottom: 2px solid #262626;
+	outline: none;
+	height: 40px;
+	color: #fff;
+	background: transparent;
+	font-size: 16px;
+	padding-left: 20px;
+	box-sizing: border-box;
+}
+.loginBox input[type='text']:hover,
+.loginBox input[type='file']:hover {
+	color: #42f3fa;
+	border: 1px solid #42f3fa;
+	box-shadow: 0 0 5px rgba(0, 255, 0, 0.3), 0 0 10px rgba(0, 255, 0, 0.2), 0 0 15px rgba(0, 255, 0, 0.1), 0 2px 0 black;
+}
+.loginBox input[type='text']:focus,
+.loginBox input[type='file']:focus {
+	border-bottom: 2px solid #42f3fa;
+}
+.inputBox {
+	position: relative;
+}
+.inputBox span {
+	position: absolute;
+	top: 10px;
+	color: #262626;
+}
+.loginBox input[type='submit'] {
+	border: none;
+	outline: none;
+	height: 40px;
+	font-size: 16px;
+	background: #59238f;
+	color: #fff;
+	border-radius: 20px;
+	cursor: pointer;
+}
+.loginBox input[type='submit']:hover {
+	background: #6a2a9f;
+}
+.loginBox a {
+	color: #262626;
+	font-size: 14px;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	display: block;
+}
+a:hover {
+	color: #00ffff;
+}
+p {
+	color: #0000ff;
+}
+
+.error-message {
+	color: #ff4444;
+	background: rgba(255, 68, 68, 0.1);
+	border: 1px solid #ff4444;
+	padding: 10px;
+	margin: 10px 0;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 14px;
+}
+
+.success-message {
+	color: #44ff44;
+	background: rgba(68, 255, 68, 0.1);
+	border: 1px solid #44ff44;
+	padding: 10px;
+	margin: 10px 0;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 14px;
+}
+</style>

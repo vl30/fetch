@@ -1,0 +1,26 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  vue-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"  # sesuai dengan PORT di server.js
+    volumes:
+      - ./db:/app/db  # mount folder db agar data persisten
+      - ./public:/app/public  # mount folder public
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    
+  # Jika kamu butuh database, bisa tambahkan service lain
+  # postgres:
+  #   image: postgres:13
+  #   environment:
+  #     POSTGRES_DB: myapp
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: password
+  #   ports:
+  #     - "5432:5432"

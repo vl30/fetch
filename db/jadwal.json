@@ -1,0 +1,32 @@
+[
+	{
+		"hari": "Senin",
+		"mata_pelajaran": "Matematika",
+		"jam": "07:00 - 08:30"
+	},
+	{
+		"hari": "Senin",
+		"mata_pelajaran": "Pemrograman Web",
+		"jam": "08:45 - 10:15"
+	},
+	{
+		"hari": "Senin",
+		"mata_pelajaran": "Bahasa Inggris",
+		"jam": "10:30 - 12:00"
+	},
+	{
+		"hari": "Selasa",
+		"mata_pelajaran": "Basis Data",
+		"jam": "07:00 - 08:30"
+	},
+	{
+		"hari": "Selasa",
+		"mata_pelajaran": "Desain UI/UX",
+		"jam": "08:45 - 10:15"
+	},
+	{
+		"hari": "Rabu",
+		"mata_pelajaran": "Pendidikan Agama",
+		"jam": "07:00 - 08:30"
+	}
+]
